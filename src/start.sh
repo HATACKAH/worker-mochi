@@ -4,12 +4,8 @@
 TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
 export LD_PRELOAD="${TCMALLOC}"
 
-# Add ComfyUI to Python path
-export PYTHONPATH="/ComfyUI:${PYTHONPATH}"
+# Правильная настройка путей Python
+export PYTHONPATH="/ComfyUI:/ComfyUI/src:${PYTHONPATH}"
 
-# Serve the API and don't shutdown the container
-if [ "$SERVE_API_LOCALLY" == "true" ]; then
-    python3 -u -m ComfyUI.src.handler --rp_serve_api --rp_api_host=0.0.0.0
-else
-    python3 -u -m ComfyUI.src.handler
-fi
+# Запускаем handler
+python3 -u /ComfyUI/src/handler.py
